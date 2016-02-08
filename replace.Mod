@@ -31,7 +31,7 @@ BEGIN
    str[i] := ch;
    INC(i);
  UNTIL (l # 1) OR (i = k);
- IF l = 1 THEN 
+ IF l # 1 THEN 
    j := i-1;
    REPEAT
    str[j] := 0X;
