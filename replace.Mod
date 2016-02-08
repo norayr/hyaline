@@ -1,6 +1,6 @@
 MODULE replace;
 
-IMPORT stdin, In := argsIn, Out := Console, Strings;
+IMPORT stdin, In := argsIn, chararr, Out := Console, Strings;
 
 TYPE string = ARRAY 1024 OF CHAR;
 
@@ -19,21 +19,48 @@ Out.Ln;
 HALT(0);
 END showhelp;
 
+PROCEDURE feelbuf(VAR str: ARRAY OF CHAR);
+VAR
+  i: INTEGER;
+  l: LONGINT;
+  ch : CHAR;
+BEGIN
+ l := 0; i := 0;
+ REPEAT
+   l := stdin.read(ch);
+   str[i] := ch;
+   INC(i);
+ UNTIL (l > 1) OR (i = LEN(str));
+END feelbuf;
+
 PROCEDURE replace(VAR old, new: string);
 VAR
   ch: CHAR;
   l:  LONGINT;
   oldlen : INTEGER;
-  tm
+  buf : POINTER TO ARRAY OF CHAR;
+  res : chararr.CompareResults;
 BEGIN
    oldlen := Strings.Length(old);
+   NEW(buf, oldlen);
+   feelbuf(buf^);
+   (*Out.Char(buf^[0]); Out.Char(buf^[1]); Out.Char(buf^[2]); Out.Ln;*)
+   res := chararr.Compare(buf^, old);
+   IF res = chararr.equal THEN
+     Out.String("equal"); Out.Ln
+   ELSE
+     Out.String("not equal"); Out.Ln
+   END;
    l := 0;
+  
+   (*
    REPEAT
      l := stdin.read(ch);
 	 IF l # 0 THEN
      
 	 END;
    UNTIL l # 0;
+   *)
 END replace;
 
 PROCEDURE getstdin;

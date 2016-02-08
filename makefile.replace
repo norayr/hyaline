@@ -4,7 +4,7 @@ voc = /opt/voc/bin/voc
 
 
 all:
-	$(voc) -s stdin.Mod argsIn.Mod replace.Mod -m
+	$(voc) -s stdin.Mod argsIn.Mod chararr.Mod replace.Mod -m
 
 
 clean:
