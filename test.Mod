@@ -22,15 +22,19 @@ ch: CHAR;
 i : INTEGER;
 BEGIN
    Texts.OpenScanner(s, Oberon.Par.text, Oberon.Par.pos);
-   Texts.Scan(s);
-   IF (s.class = Texts.Char)(* & (s.c = Oberon.OptionChar)*) THEN
-	  ch := s.nextCh;
-	  Out.String("char: "); Out.Char(ch); Out.Ln;
-   ELSIF s.class = Texts.String THEN
-      Out.String("string: "); Out.Ln;
-   ELSIF s.class = Texts.Int THEN
-      Out.String("int: "); Out.Ln;
-   END;
+   REPEAT
+	 Texts.Scan(s);
+	 IF s.class = Texts.Name THEN
+		Out.String("name: "); Out.String(s.s); Out.Ln;
+	 ELSIF (s.class = Texts.Char)(* & (s.c = Oberon.OptionChar)*) THEN
+		ch := s.nextCh;
+		Out.String("char: "); Out.Char(ch); Out.Ln;
+	 ELSIF s.class = Texts.String THEN
+		Out.String("string: "); Out.Ln;
+	 ELSIF s.class = Texts.Int THEN
+		Out.String("int: "); Out.Int(s.i, 0); Out.Ln;
+	 END;
+   UNTIL s.nextCh = 0X;
 
 (*Texts.Scan(s);
 
