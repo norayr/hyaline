@@ -21,19 +21,26 @@ END showhelp;
 
 PROCEDURE feelbuf(VAR str: ARRAY OF CHAR);
 VAR
-  i: INTEGER;
-  l: LONGINT;
+  i, j, k, l: LONGINT;
   ch : CHAR;
 BEGIN
  l := 0; i := 0;
+ k := LEN(str);
  REPEAT
    l := stdin.read(ch);
    str[i] := ch;
    INC(i);
- UNTIL (l > 1) OR (i = LEN(str));
+ UNTIL (l # 1) OR (i = k);
+ IF l = 1 THEN 
+   j := i-1;
+   REPEAT
+   str[j] := 0X;
+   INC(j)
+   UNTIL j = k;
+ END
 END feelbuf;
 
-PROCEDURE WriteLn(VAR str : ARRAY OF CHAR);
+PROCEDURE WriteLn(VAR str : ARRAY OF CHAR; last: INTEGER);
 VAR
   i : INTEGER;
   k : LONGINT;
@@ -44,7 +51,7 @@ BEGIN
     REPEAT
       Out.Char(str[i]);
 	  INC(i)
-    UNTIL i = k
+    UNTIL (i = last) OR (i = k)
   END
 END WriteLn;
 
@@ -64,7 +71,7 @@ BEGIN
 	 res := chararr.Compare(buf^, old);
 	 IF res = chararr.equal THEN
 	   (*Out.String("equal"); Out.Ln*)
-	   WriteLn(new);
+	   WriteLn(new, Strings.Length(new));
 	   feelbuf(buf^);
 	 ELSE
 	   (*Out.String("not equal"); Out.Ln*)
@@ -76,9 +83,9 @@ BEGIN
 	   END;
 	 END;
    UNTIL l # 1; 
-   Out.Char(buf^[0]);
+   WriteLn(buf^, oldlen-1);
    (*Out.Char(0AX);*)
-   Out.Flush;
+   (*Out.Flush;*)
 END replace;
 
 PROCEDURE getstdin;
