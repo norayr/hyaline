@@ -33,6 +33,21 @@ BEGIN
  UNTIL (l > 1) OR (i = LEN(str));
 END feelbuf;
 
+PROCEDURE WriteLn(VAR str : ARRAY OF CHAR);
+VAR
+  i : INTEGER;
+  k : LONGINT;
+BEGIN
+  i := 0;
+  k := Strings.Length(str);
+  IF i < k THEN
+    REPEAT
+      Out.Char(str[i]);
+	  INC(i)
+    UNTIL i = k
+  END
+END WriteLn;
+
 PROCEDURE replace(VAR old, new: string);
 VAR
   ch: CHAR;
@@ -44,23 +59,26 @@ BEGIN
    oldlen := Strings.Length(old);
    NEW(buf, oldlen);
    feelbuf(buf^);
-   (*Out.Char(buf^[0]); Out.Char(buf^[1]); Out.Char(buf^[2]); Out.Ln;*)
-   res := chararr.Compare(buf^, old);
-   IF res = chararr.equal THEN
-     Out.String("equal"); Out.Ln
-   ELSE
-     Out.String("not equal"); Out.Ln
-   END;
    l := 0;
-  
-   (*
    REPEAT
-     l := stdin.read(ch);
-	 IF l # 0 THEN
-     
+	 res := chararr.Compare(buf^, old);
+	 IF res = chararr.equal THEN
+	   (*Out.String("equal"); Out.Ln*)
+	   WriteLn(new);
+	   feelbuf(buf^);
+	 ELSE
+	   (*Out.String("not equal"); Out.Ln*)
+	   Out.Char(buf^[0]);
+	   chararr.ShiftLeft(buf^); 
+	   l := stdin.read(ch);
+	   IF l = 1 THEN
+		 buf^[oldlen-1] := ch;
+	   END;
 	 END;
-   UNTIL l # 0;
-   *)
+   UNTIL l # 1; 
+   Out.Char(buf^[0]);
+   (*Out.Char(0AX);*)
+   Out.Flush;
 END replace;
 
 PROCEDURE getstdin;

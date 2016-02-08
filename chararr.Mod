@@ -27,6 +27,18 @@ PROCEDURE Compare* (stringVal1, stringVal2: ARRAY OF CHAR): CompareResults;
     END
   END Compare;
 
-
+PROCEDURE ShiftLeft*(VAR stringVal: ARRAY OF CHAR);
+VAR
+  i,k : LONGINT;
+  BEGIN
+    k := LEN(stringVal);
+	IF k > 1 THEN
+	  i := 0;
+	  REPEAT
+		stringVal[i] := stringVal[i+1];
+		INC(i);
+	  UNTIL i = k-1
+    END
+  END ShiftLeft;
 
 END chararr.
