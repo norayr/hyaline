@@ -3,7 +3,7 @@ export CFLAGS
 voc = /opt/voc/bin/voc
 INC0 = "-I/opt/voc/src/lib/system/linux/gcc/x86_64"
 INC1 = "-I/opt/voc/lib/voc/obj"
-#LDFLAGS="-lVishapOberon -L. -L/opt/voc/lib "
+LDFLAGS="-L/opt/voc/lib -lVishapOberon"
 
 
 
